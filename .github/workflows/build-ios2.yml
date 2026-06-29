@@ -1,0 +1,6 @@
+    - name: Configure CMake for iOS
+      run: |
+        cmake -B build -G Xcode \
+        -DCMAKE_SYSTEM_NAME=iOS \
+        -DCMAKE_OSX_ARCHITECTURES=arm64 \
+        -DBUILD_SHARED_LIBS=ON
