@@ -1,4 +1,4 @@
-name: Build MobileGL (Vulkan) for iOS
+name: Build MobileGL for iOS
 on: [workflow_dispatch]
 
 jobs:
@@ -26,5 +26,5 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: MobileGL-iOS-Vulkan-dylib
+        name: MobileGL-iOS-dylib
         path: build/**/*.dylib
