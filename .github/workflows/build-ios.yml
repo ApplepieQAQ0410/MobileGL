@@ -8,7 +8,10 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        submodules: recursive
+        submodules: recursive # This is good, but sometimes needs a manual force
+
+    - name: Initialize Submodules
+      run: git submodule update --init --recursive
 
     - name: Install Vulkan Headers
       run: brew install vulkan-headers
@@ -18,7 +21,9 @@ jobs:
         cmake -B build -G Xcode \
         -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_ARCHITECTURES=arm64 \
-        -DBUILD_SHARED_LIBS=ON
+        -DBUILD_SHARED_LIBS=ON \
+        -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
+        -DENABLE_OPT=OFF
 
     - name: Compile Code
       run: cmake --build build --config Release
