@@ -8,13 +8,10 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        submodules: recursive # This is good, but sometimes needs a manual force
+        submodules: recursive
 
     - name: Initialize Submodules
       run: git submodule update --init --recursive
-
-    - name: Install Vulkan Headers
-      run: brew install vulkan-headers
 
     - name: Configure CMake for iOS
       run: |
@@ -23,7 +20,12 @@ jobs:
         -DCMAKE_OSX_ARCHITECTURES=arm64 \
         -DBUILD_SHARED_LIBS=ON \
         -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
-        -DENABLE_OPT=OFF
+        -DENABLE_OPT=OFF \
+        -DHAVE_PTHREAD_AFFINITY=0 \
+        -DHAVE_THREAD_SAFETY_ATTRIBUTES=0 \
+        -DHAVE_STD_REGEX=0 \
+        -DHAVE_POSIX_REGEX=0 \
+        -DHAVE_STEADY_CLOCK=1
 
     - name: Compile Code
       run: cmake --build build --config Release
