@@ -1,0 +1,30 @@
+name: Build MobileGL (Vulkan) for iOS
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install Vulkan Headers
+      run: brew install vulkan-headers
+
+    - name: Configure CMake for iOS
+      run: |
+        cmake -B build -G Xcode \
+        -DCMAKE_SYSTEM_NAME=iOS \
+        -DCMAKE_OSX_ARCHITECTURES=arm64 \
+        -DBUILD_SHARED_LIBS=ON
+
+    - name: Compile Code
+      run: cmake --build build --config Release
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: MobileGL-iOS-Vulkan-dylib
+        path: build/**/*.dylib
